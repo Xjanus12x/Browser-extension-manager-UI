@@ -33,3 +33,12 @@ body {
   font-family: 'NotoSans', sans-serif;
 }
 
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr min(100%,70rem) 1fr;
+  align-content: start;
+}
+
+.extensions-list {
+  grid-template-columns: repeat(auto-fill,minmax(min(100%,20rem), 1fr));
+}
