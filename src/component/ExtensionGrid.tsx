@@ -47,8 +47,8 @@ export default function ExtensionGrid() {
         aria-labelledby="extension-list"
       >
         {extensionList && extensionList.length > 0 ? (
-          extensionList.map((extension, i) => (
-            <ExtensionCard {...extension} key={i} />
+          extensionList.map((extension) => (
+            <ExtensionCard {...extension} key={extension.name} />
           ))
         ) : (
           <ExtensionCard
