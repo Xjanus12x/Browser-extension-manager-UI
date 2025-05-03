@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { cn } from "../utils/cn";
 import { useExtensionStore } from "../store/useExtensionStore";
 import { Button } from "./Button";
+import { Toggle } from "./Toggle";
 
 type ExtensionCardProps = {
   logo: string;
@@ -15,8 +16,7 @@ export default function ExtensionCard({
   isActive,
 }: ExtensionCardProps) {
   const removeExtension = useExtensionStore((state) => state.removeExtension);
-  const [enabled, setEnabled] = useState(isActive);
-
+  const toggleExtension = useExtensionStore((state) => state.toggleExtension);
   const headingId = `${name.replace(/\s+/g, "-").toLowerCase()}-heading`;
   const descriptionId = `${name
     .replace(/\s+/g, "-")
@@ -24,38 +24,46 @@ export default function ExtensionCard({
 
   return (
     <article
-      className="p-4 space-y-5 border shadow-md border-neutral-200 bg-neutral-0 rounded-2xl md:space-y-10"
+      className="p-4 gap-5 border shadow-md border-card-border bg-card-bg rounded-2xl md:gap-10 grid grid-rows-[auto_auto] content-between"
       aria-labelledby={headingId}
       aria-describedby={descriptionId}
     >
       <div className="flex gap-4">
         <img className="self-start" src={logo} alt={`${name} logo`} />
         <div className="space-y-2">
-          <h2 className="text-lg font-bold text-neutral-900" id={headingId}>
+          <h2
+            className="text-lg font-bold text-card-title-foreground"
+            id={headingId}
+          >
             {name}
           </h2>
-          <p className="text-sm text-neutral-600" id={descriptionId}>
+          <p
+            className={cn(
+              "text-sm text-card-description-foreground",
+              isActive && "line-clamp-1"
+            )}
+            id={descriptionId}
+          >
             {description}
           </p>
         </div>
       </div>
 
-      <form>
+      <form className="h-fit">
         <fieldset className="flex items-center justify-between">
           <legend className="sr-only">Extension Actions</legend>
-          <Button label="Remove" onClick={() => removeExtension(name)} />
+          <Button
+            className="bg-card-btn-background text-card-btn-foreground border-card-btn-border hover:bg-card-btn-hover-background focus-visible:bg-card-btn-focus-background focus-visible:border-card-btn-focus-border focus-visible:outline-card-btn-ring hover:text-card-btn-hover-foreground hover:border-card-btn-hover-border focus-visible:outline-offset-2"
+            label="Remove"
+            onClick={() => removeExtension(name)}
+          />
 
-          <label className="inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              value=""
-              className="sr-only peer"
-              // checked={isActive}
-              // aria-checked={isActive}
-            />
-            <div className="relative w-11 h-6 bg-neutral-300 peer-focus-visible:outline peer-focus-visible:outline-red-400 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-neutral-0 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-neutral-0 after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-700 peer-focus-visible:outline-offset-2"></div>
-            <span className="sr-only">{enabled ? "Enabled" : "Disabled"}</span>
-          </label>
+          <Toggle
+            checked={isActive}
+            aria-checked={isActive}
+            onChange={() => toggleExtension(name)}
+            isActive={isActive}
+          />
         </fieldset>
       </form>
     </article>
