@@ -1,8 +1,6 @@
-import logo from "../assets/images/logo.svg";
 import sunIcon from "../assets/images/icon-sun.svg";
 import moonIcon from "../assets/images/icon-moon.svg";
 import { useEffect, useState } from "react";
-import { cn } from "../utils/cn";
 
 type Theme = "light" | "dark";
 
