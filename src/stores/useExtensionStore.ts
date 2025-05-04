@@ -13,6 +13,7 @@ type Actions = {
   filterExtensionList: (filter: CurrentFilter) => void;
   removeExtension: (name: string) => void;
   toggleExtension: (name: string) => void;
+  fillExtensionList: () => void;
 };
 
 export const useExtensionStore = create<State & Actions>((set, get) => {
@@ -31,7 +32,9 @@ export const useExtensionStore = create<State & Actions>((set, get) => {
     currentFilter: "all",
 
     filterExtensionList: (filter: CurrentFilter = "all") => {
-      const { currentFilter, extensionList } = get();
+      const currentFilter = get().currentFilter;
+      const extensionList = get().extensionList;
+
       if (filter === currentFilter) return;
 
       const filteredList =
@@ -50,8 +53,9 @@ export const useExtensionStore = create<State & Actions>((set, get) => {
     },
 
     removeExtension: (name) => {
-      const { extensionList } = get();
+      const extensionList = get().extensionList;
       const updatedList = extensionList.filter((ext) => ext.name !== name);
+
       localStorage.setItem("extensionList", JSON.stringify(updatedList));
 
       set({
@@ -61,7 +65,8 @@ export const useExtensionStore = create<State & Actions>((set, get) => {
     },
 
     toggleExtension: (name) => {
-      const { extensionList, currentFilter } = get();
+      const currentFilter = get().currentFilter;
+      const extensionList = get().extensionList;
 
       const updatedList = extensionList.map((ext) =>
         ext.name === name ? { ...ext, isActive: !ext.isActive } : ext
@@ -80,6 +85,15 @@ export const useExtensionStore = create<State & Actions>((set, get) => {
       set({
         extensionList: updatedList,
         filteredExtensionList: filteredList,
+      });
+    },
+
+    fillExtensionList: () => {
+      localStorage.setItem("extensionList", JSON.stringify(data));
+
+      set({
+        extensionList: data,
+        filteredExtensionList: data,
       });
     },
   };
