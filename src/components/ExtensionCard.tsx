@@ -1,5 +1,5 @@
 import { cn } from "../utils/cn";
-import { useExtensionStore } from "../store/useExtensionStore";
+import { useExtensionStore } from "../stores/useExtensionStore";
 import { Button } from "./Button";
 import { Toggle } from "./Toggle";
 
@@ -15,8 +15,14 @@ export default function ExtensionCard({
   description,
   isActive,
 }: ExtensionCardProps) {
+  const isExtensionListEmpty = useExtensionStore(
+    (state) => state.extensionList.length === 0
+  );
   const removeExtension = useExtensionStore((state) => state.removeExtension);
   const toggleExtension = useExtensionStore((state) => state.toggleExtension);
+  const fillExtensionList = useExtensionStore(
+    (state) => state.fillExtensionList
+  );
   const headingId = `${name.replace(/\s+/g, "-").toLowerCase()}-heading`;
   const descriptionId = `${name
     .replace(/\s+/g, "-")
@@ -54,8 +60,10 @@ export default function ExtensionCard({
           <legend className="sr-only">Extension Actions</legend>
           <Button
             className="bg-card-btn-background text-card-btn-foreground border-card-btn-border hover:bg-card-btn-hover-background focus-visible:bg-card-btn-focus-background focus-visible:border-card-btn-focus-border focus-visible:outline-card-btn-ring hover:text-card-btn-hover-foreground hover:border-card-btn-hover-border focus-visible:outline-offset-2"
-            label="Remove"
-            onClick={() => removeExtension(name)}
+            label={`${isExtensionListEmpty ? "Reset" : "Remove"}`}
+            onClick={() =>
+              isExtensionListEmpty ? fillExtensionList() : removeExtension(name)
+            }
           />
 
           <Toggle
