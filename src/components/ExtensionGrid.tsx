@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { useExtensionStore } from "../store/useExtensionStore";
+import { useExtensionStore } from "../stores/useExtensionStore";
 import ExtensionCard from "./ExtensionCard";
 import chitoge from "../assets/images/chitoge.png";
 
