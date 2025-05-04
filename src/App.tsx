@@ -1,5 +1,5 @@
-import Header from "./component/Header";
-import ExtensionGrid from "./component/ExtensionGrid";
+import Header from "./components/Header";
+import ExtensionGrid from "./components/ExtensionGrid";
 
 export default function App() {
   return (
